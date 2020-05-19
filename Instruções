@@ -1,0 +1,8 @@
+Criado por Leandro Viana
+19/05/2020
+
+Instruções de configuração do frontend:
+
+1. Setar o endpoint da API no arquivo /src/endpoint.js;
+2. Rodar o comando npm install para instalar as dependências do node;
+3. Rodar o comando npm run serve para startar um servidor local para a aplicação.

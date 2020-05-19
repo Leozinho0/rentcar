@@ -237,6 +237,8 @@ export default {
         .get(BASE_API + '/api/car')
         .then(response => {
           this.items = response.data
+        }).catch((error) => {
+          alert('error ao conectar com api');
         });
     },
   	editItem (item) {

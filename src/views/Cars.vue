@@ -6,9 +6,9 @@
         text
         dismissible
         transition="scale-transition"
-        type="success"
-        v-show="form_success">
-        {{ form_success }}
+        :type="table_alert.type"
+        v-show="table_alert">
+        {{ table_alert.data }}
       </v-alert>
       
     	<v-card>
@@ -60,9 +60,9 @@
                         text
                         dismissible
                         transition="scale-transition"
-                        type="error"
-                        v-show="form_error"
-                        v-for="(error, index) in form_error">
+                        :type="form_alert.type"
+                        v-show="form_alert"
+                        v-for="(error, index) in form_alert.data">
                         {{ error[0] }}
                       </v-alert>
                       <v-row>
@@ -146,8 +146,10 @@
             </v-icon>
           </template>
           <template v-slot:no-data>
+            Nenhum Registro
+            <v-spacer></v-spacer>
             <v-btn color="primary" @click="initialize">
-              Reset
+              Refresh
             </v-btn>
           </template>
         </v-data-table>
@@ -165,8 +167,8 @@ export default {
   data: function(){
   	return {
       valid: true,
-      form_error: false,
-      form_success: false,
+      form_alert: false,
+      table_alert: false,
   		dialog: false,
       lazy: false,
   		headers: [
@@ -229,8 +231,8 @@ export default {
       return this.$refs.form.resetValidation();
     },
     hidealerts(){
-      this.form_error   = false;
-      this.form_success = false;
+      this.form_alert   = false;
+      this.table_alert  = false;
     },
   	initialize () {
       axios
@@ -286,10 +288,16 @@ export default {
           url: BASE_API + '/api/car/' + this.editedItem.id,
           data: params
         }).then(response => {
-          this.form_success = "Atualizado com sucesso!";
+          this.table_alert = {
+            type: 'success',
+            data: 'Atualizado com sucesso!'
+          }
           this.close();
         }).catch((error) => {
-          this.form_error = error.response.data.errors;
+          this.form_alert = {
+            type: 'error',
+            data: error.response.data.errors
+          }
         });
       } else {
         //Axios ADD
@@ -302,10 +310,16 @@ export default {
         }).then(response => {
           this.items.push(response.data);
 
-          this.form_success = "Adicionado com sucesso!";
+          this.table_alert = {
+            type: 'success',
+            data: 'Adicionado com sucesso!'
+          }
           this.close();
         }).catch((error) => {
-          this.form_error = error.response.data.errors;
+          this.form_alert = {
+            type: 'error',
+            data: error.response.data.errors
+          }
         });
       }
     },

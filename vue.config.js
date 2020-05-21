@@ -1,3 +1,6 @@
 module.exports = {
-  lintOnSave: false
+  lintOnSave: false,
+  devServer: {
+  	host: 'front.p2.test'
+  }
 }

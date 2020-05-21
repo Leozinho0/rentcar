@@ -17,7 +17,7 @@
 
       <v-btn 
         icon 
-        to="/">
+        to="Home">
         <v-icon>mdi-home</v-icon>
       </v-btn>
       <v-btn icon>
@@ -46,7 +46,7 @@
             v-for="(n, index) in toolbar_config.btns"
             :key="index"
             @click="() => {}">
-            <v-list-item-title>{{ toolbar_config.btns[index].title }}</v-list-item-title>
+            <v-list-item-title @click="logout">{{ toolbar_config.btns[index].title }}</v-list-item-title>
           </v-list-item>
         </v-list>
       </v-menu>
@@ -70,6 +70,12 @@ export default {
   	}
   },
   methods: {
+    logout(){
+      this.$http.post('/logout').then(response => {
+        localStorage.removeItem('isLoggedIn');
+        this.$router.push({ name: 'Login' });
+      });
+    }
   }
 }
 </script>

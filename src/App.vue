@@ -1,22 +1,16 @@
 <template>
   <v-app id="app">
-    <L_toolbar />
     <router-view/>
   </v-app>
 </template>
 
 <script>
-// @ is an alias to /src
-import L_toolbar from '@/components/Toolbar.vue'
 
 export default {
-  name: 'Home',
+  name: 'App',
   data: function(){
     return {
     }
-  },
-  components: {
-    L_toolbar
   }
 }
 </script>

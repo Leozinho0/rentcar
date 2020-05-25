@@ -1,8 +1,8 @@
 <template>
-  <div>
+  <v-content>
     <L_toolbar />
     <router-view></router-view>
-  </div>
+  </v-content>
 </template>
 
 <script>
@@ -10,7 +10,7 @@
 import L_toolbar from '@/components/Toolbar.vue'
 
 export default {
-  name: 'Home',
+  name: 'Layout',
   data: function(){
     return {}
   },

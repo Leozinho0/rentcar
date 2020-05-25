@@ -17,9 +17,15 @@ Vue.use(VueRouter)
         meta: { requiresAuth: true }
       },
       {
-        path: '/cars',
-        name: 'Cars',
-        component: () => import(/* webpackChunkName: "Cars" */ '@/views/Cars.vue'),
+        path: '/profissionais',
+        name: 'Profissionais',
+        component: () => import(/* webpackChunkName: "Profissionais" */ '@/views/Profissionais.vue'),
+        meta: { requiresAuth: true }
+      },
+      {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: () => import(/* webpackChunkName: "Dashboard" */ '@/views/Dashboard.vue'),
         meta: { requiresAuth: true }
       }
     ]
@@ -33,6 +39,11 @@ Vue.use(VueRouter)
     path: '/register',
     name: 'Register',
     component: () => import(/* webpackChunkName: "Register" */ '@/views/Register.vue')
+  },
+  {
+    path: '/cadastro',
+    name: 'Cadastro',
+    component: () => import(/* webpackChunkName: "Cadastro" */ '@/views/Cadastro.vue')
   }
 ]
 

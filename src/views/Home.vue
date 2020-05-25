@@ -38,10 +38,10 @@ export default {
   data: function(){
     return {
       links: [
-        { title: 'Veículos', subtitle: 'Acessar', icon: 'directions_car', color: 'light-blue lighten-1', url: '/cars' },
-        { title: 'Produtos', subtitle: 'Acessar', icon: 'assignment', color: 'green lighten-2', url: '/cars' },
-        { title: 'Clientes', subtitle: 'Acessar', icon: 'business', color: 'pink lighten-3', url: '/cars' },
-        { title: 'Configurações', subtitle: 'Acessar', icon: 'settings', color: 'purple lighten-2', url: '/login' },
+        { title: 'Profissionais', subtitle: 'Acessar', icon: 'assignment_ind', color: 'light-blue lighten-1', url: '/profissionais' },
+        { title: 'Dashboard', subtitle: 'Acessar', icon: 'insert_chart', color: 'green lighten-2', url: '/dashboard' },
+        { title: 'Usuários', subtitle: 'Acessar', icon: 'person', color: 'pink lighten-3', url: '/cars' },
+        { title: 'Configurações', subtitle: 'Acessar', icon: 'settings', color: 'purple lighten-2', url: '/home' },
       ]
     }
   },

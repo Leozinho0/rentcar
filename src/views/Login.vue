@@ -14,21 +14,21 @@
           sm="8"
           md="4">
           <v-alert
-    		    dense
-    		    text
-    		    dismissible
-    		    transition="scale-transition"
-    		    type="error"
-    		    v-if="error_message">
-    		    {{ error_message }}
-  	      </v-alert>
+            dense
+            dismissible
+            transition="scale-transition"
+            type="error"
+            v-show="error_message">
+            {{ error_message }}
+          </v-alert>
           <v-card class="elevation-12">
             <v-toolbar
-              color="primary"
+              color="teal darken-1"
+              dense
               dark
               flat>
               <v-toolbar-title>
-                Login
+                Aqquacure - Login
               </v-toolbar-title>
             </v-toolbar>
             <v-card-text>
@@ -41,6 +41,7 @@
                   prepend-icon="person"
                   v-model="username"
                   type="text"
+                  counter
                   :rules="[rules.required]"
                   maxlength="20">
                 </v-text-field>
@@ -51,6 +52,7 @@
                   prepend-icon="lock"
                   v-model="password"
                   type="password"
+                  counter
                   :rules="[rules.required]"
                   maxlength="20">
                 </v-text-field>
@@ -62,10 +64,12 @@
                   color="primary"
                   text 
                   @click="register">
-                  Cadastrar
+                  Registrar
                 </v-btn>
                 <v-btn 
-                  color="primary"
+                  color="success"
+                  dense
+                  :loading="btn_loading"
                   @click="validate"
                   :disabled="!valid">
                   Login
@@ -82,13 +86,13 @@
 <script>
   export default {
   	name: "Login",
-  	props: ['source'],
   	data: function(){
   	  return {
   	  	username: '',
   	  	password: '',
   	  	error_message: '',
         valid: false,
+        btn_loading: false,
         rules: {
           required: value => !!value || 'Campo obrigatório'
         }
@@ -96,6 +100,7 @@
   	},
   	methods: {
       validate(){
+        this.error_message = null;
         if(this.valid){
           this.login();
         }else{
@@ -103,14 +108,20 @@
         }
       },
   	  login(){
+        this.btn_loading = true;
+
   	  	this.$http.get('/sanctum/csrf-cookie').then(response => {
   	  	  this.$http.post('/login', {
   	  	  	email: this.username,
   	  	  	password: this.password
   	  	  }).then(res => {
+            this.btn_loading = false;
+
   	  	  	localStorage.setItem('isLoggedIn', 'true');
   	  	  	this.$router.push({ name: '/' });
   	  	  }).catch(error =>{
+            this.btn_loading = false;
+
   	  	  	const key = Object.keys(error.response.data.errors)[0];
   	  	  	this.error_message = error.response.data.errors[key][0];
   	  	  });

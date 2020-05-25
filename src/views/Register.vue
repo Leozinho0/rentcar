@@ -15,7 +15,7 @@
 	          md="4">
 	          <v-alert
     		    dense
-    		    text
+    		    dark
     		    dismissible
     		    transition="scale-transition"
     		    type="error"
@@ -24,11 +24,12 @@
   	    	  </v-alert>
 	          <v-card class="elevation-12">
 	            <v-toolbar
-	              color="primary"
+	              color="teal darken-1"
+	              dense
 	              dark
 	              flat>
 	              <v-toolbar-title>
-	                Novo Usuário
+	                Aqquacure - Novo Usuário
 	              </v-toolbar-title>
 	            </v-toolbar>
 	            <v-card-text>
@@ -70,7 +71,8 @@
 				        color="success"
 				        class="mr-4"
 				        @click="validate"
-				        :disabled="!valid">
+				        :disabled="!valid"
+				        :loading="btn_loading">
 				          Cadastrar
 				      </v-btn>
 				    </v-container>
@@ -93,6 +95,7 @@ export default {
   	  password: '',
   	  error_message: '',
   	  valid: false,
+  	  btn_loading: false,
   	  rules: {
 	    required: value => !!value || 'Campo obrigatório'
 	  }
@@ -100,6 +103,7 @@ export default {
   },
   methods: {
   	validate(){
+  	  this.error_message = null;
 	  if(this.valid){
 	    this.register();
 	  }else{
@@ -111,14 +115,20 @@ export default {
   	},
   	register(){
   	  	this.$http.get('/sanctum/csrf-cookie').then(response => {
+  	  	  this.btn_loading = true;
+
   	  	  this.$http.post('/register', {
   	  	  	name: this.name,
   	  	  	email: this.email,
   	  	  	password: this.password,
   	  	  	password_confirmation: this.password
   	  	  }).then(res => {
+  	  	  	this.btn_loading = false;
+
   	  	  	alert('Cadastrado com Sucesso!');
   	  	  }).catch(error =>{
+  	  	  	this.btn_loading = false;
+  	  	  	
   	  	  	const key = Object.keys(error.response.data.errors)[0];
   	  	  	this.error_message = error.response.data.errors[key][0];
   	  	  });

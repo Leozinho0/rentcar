@@ -4,7 +4,7 @@
       <v-col>
         <chart-bar
         v-if="loaded"
-        :chartdata="chartdata"
+        :chartdata="chartdata_bar"
         :options="options"/>
       </v-col>
       <v-col>
@@ -34,9 +34,9 @@
       <v-col>
         <chart-pie
           v-if="loaded"
-          :chartdata="chartdata"
-          :options="options"/>
+          :chartdata="chartdata_pie"/>
       </v-col>
+      <v-col></v-col>
     </v-row>
   </v-container>
 </template>
@@ -51,38 +51,112 @@ export default {
   data: function(){
   	return {
       total_profissionais: 0,
-  	  loaded: false,
-  	  chartdata: {
+      loaded: false,
+      chartdata_pie: {
         labels: [],
         datasets: [{
-            label: 'Quantidade de Profissionais por Profissão',
-            data: [],
+          data: [],
             backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)',
-                'rgba(72, 125, 64, 0.2)',
-                'rgba(255, 125, 64, 0.2)',
-                'rgba(11, 134, 80, 0.2)',
-                'rgba(55, 134, 80, 0.2)',
-                'rgba(100, 99, 80, 0.2)',
-                'rgba(253, 20, 110, 0.2)',
-                'rgba(253, 20, 110, 0.2)',
+              'rgba(255, 20, 132, 0.2)',
+              'rgba(54, 162, 235, 0.2)',
+              'rgba(255, 206, 86, 0.2)',
+              'rgba(75, 192, 192, 0.2)',
+              'rgba(153, 102, 255, 0.2)',
+              'rgba(255, 159, 64, 0.2)',
+              'rgba(72, 125, 64, 0.2)',
+              'rgba(255, 125, 64, 0.2)',
+              'rgba(11, 134, 80, 0.2)',
+              'rgba(55, 134, 80, 0.2)',
+              'rgba(100, 99, 80, 0.2)',
+              'rgba(253, 20, 110, 0.2)',
+              'rgba(253, 20, 110, 0.2)',
+              'rgba(253, 20, 150, 0.2)',
+              'rgba(213, 200, 190, 0.2)',
+              'rgba(155, 200, 190, 0.2)',
+              'rgba(155, 155, 10, 0.2)',
+              'rgba(155, 55, 10, 0.2)',
+              'rgba(55, 55, 10, 0.2)',
+              'rgba(136, 96, 100, 0.2)',
+              'rgba(20, 10, 100, 0.2)',
+              'rgba(20, 189, 100, 0.2)',
+              'rgba(20, 189, 180, 0.2)',
+              'rgba(20, 223, 220, 0.2)',
+              'rgba(220, 23, 22, 0.2)',
+              'rgba(12, 230, 22, 0.2)',
+              'rgba(12, 230, 114, 0.2)',
             ],
-            borderColor: [
-                'rgba(255, 99, 132, 1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
+            BorderColor: [
+              'rgba(255, 20, 132, 1)',
+              'rgba(54, 162, 235, 1)',
+              'rgba(255, 206, 86, 1)',
+              'rgba(75, 192, 192, 1)',
+              'rgba(153, 102, 255, 1)',
+              'rgba(255, 159, 64, 1)',
+              'rgba(72, 125, 64, 1)',
+              'rgba(255, 125, 64, 1)',
+              'rgba(11, 134, 80, 1)',
+              'rgba(55, 134, 80, 1)',
+              'rgba(100, 99, 80, 1)',
+              'rgba(253, 20, 110, 1)',
+              'rgba(253, 20, 110, 1)',
+              'rgba(253, 20, 150, 1)',
+              'rgba(213, 200, 190, 1)',
+              'rgba(155, 200, 190, 1)',
+              'rgba(155, 155, 10, 1)',
+              'rgba(155, 55, 10, 1)',
+              'rgba(55, 55, 10, 1)',
+              'rgba(136, 96, 100, 1)',
+              'rgba(20, 10, 100, 1)',
+              'rgba(20, 189, 100, 1)',
+              'rgba(20, 189, 180, 1)',
+              'rgba(20, 223, 220, 1)',
+              'rgba(220, 23, 22, 1)',
+              'rgba(12, 230, 22, 1)',
+              'rgba(12, 230, 114, 1)',
             ],
             borderWidth: 1
         }]
-    },
+      },
+  	  chartdata_bar: {
+        labels: [],
+        datasets: [{
+          label: 'Quantidade de Profissionais por Profissão',
+          data: [],
+          backgroundColor: [
+            'rgba(255, 20, 132, 0.2)',
+            'rgba(54, 162, 235, 0.2)',
+            'rgba(255, 206, 86, 0.2)',
+            'rgba(75, 192, 192, 0.2)',
+            'rgba(153, 102, 255, 0.2)',
+            'rgba(255, 159, 64, 0.2)',
+            'rgba(72, 125, 64, 0.2)',
+            'rgba(255, 125, 64, 0.2)',
+            'rgba(11, 134, 80, 0.2)',
+            'rgba(55, 134, 80, 0.2)',
+            'rgba(100, 99, 80, 0.2)',
+            'rgba(253, 20, 110, 0.2)',
+            'rgba(253, 20, 110, 0.2)',
+            'rgba(253, 20, 150, 0.2)'
+          ],
+          borderColor: [
+            'rgba(255, 20, 132, 0.6)',
+            'rgba(54, 162, 235, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(75, 192, 192, 0.6)',
+            'rgba(153, 102, 255, 0.6)',
+            'rgba(255, 159, 64, 0.6)',
+            'rgba(72, 125, 64, 0.6)',
+            'rgba(255, 125, 64, 0.6)',
+            'rgba(11, 134, 80, 0.6)',
+            'rgba(55, 134, 80, 0.6)',
+            'rgba(100, 99, 80, 0.6)',
+            'rgba(253, 20, 110, 0.6)',
+            'rgba(253, 20, 110, 0.6)',
+            'rgba(253, 20, 150, 0.6)'
+          ],
+            borderWidth: 1
+        }]
+      },
   	  options: {
   	  	scales: {
             yAxes: [{
@@ -97,13 +171,18 @@ export default {
   methods: {
   	initialize(){
       this.$http
-        .get('/api/teste')
+        .get('/api/get_chart')
         .then(response => {
-          this.chartdata.labels           = response.data.profissoes;
-          this.chartdata.datasets[0].data = response.data.quantidades;
-          this.total_profissionais        = response.data.total;
+          //Bar
+          this.chartdata_bar.labels           = response.data.profissoes;
+          this.chartdata_bar.datasets[0].data = response.data.quantidades;
+          this.total_profissionais            = response.data.total;
 
-          console.log(response.data.quantidades);
+          //Pie
+          this.chartdata_pie.labels           = response.data.estados;
+          this.chartdata_pie.datasets[0].data = response.data.quantidade_estados;
+
+          //console.log(response.data.quantidades);
           this.loaded = true;
         }).catch((error) => {
           alert('error ao conectar com api');

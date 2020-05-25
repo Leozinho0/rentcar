@@ -42,19 +42,10 @@
                 </v-card-title>
                 <v-card-text>
                   <v-container>
-                    <v-alert
-                      dense
-                      text
-                      dismissible
-                      transition="scale-transition"
-                      :type="form_alert.type"
-                      v-show="form_alert"
-                      v-for="(error, index) in form_alert.data">
-                      {{ error[0] }}
-                    </v-alert>
                     <v-row>
                       <v-col cols="12" sm="6" md="6">
                         <v-text-field 
+                          dense
                           v-model="editedItem.nome"
                           label="Nome"
                           :rules="[rules.required, rules.counter]"
@@ -64,7 +55,8 @@
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
+                        <v-text-field
+                          dense 
                           v-model="editedItem.nascimento"
                           label="Nascimento"
                           :rules="[rules.required]"
@@ -73,7 +65,8 @@
                         </v-text-field>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
-                        <v-text-field 
+                        <v-text-field
+                          dense
                           v-model="editedItem.fone"
                           label="Fone"
                           :rules="[rules.required, rules.counter]"
@@ -84,6 +77,7 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <v-text-field 
+                          dense
                           v-model="editedItem.email"
                           label="Email"
                           :rules="[rules.required, rules.counter]"
@@ -94,31 +88,38 @@
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <v-select 
+                          dense
                           v-model="editedItem.estado_id"
                           label="Estado"
                           :items="estados"
                           :rules="[rules.required]"
                           prepend-icon="category"
-                          @change="load_cidades">
+                          @change="cidades = []; editedItem.cidade_id = ''">
                         </v-select>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <v-select 
+                          dense
                           v-model="editedItem.cidade_id"
                           label="Cidade"
                           :items="cidades"
                           :rules="[rules.required]"
-                          prepend-icon="layers">
+                          prepend-icon="layers"
+                          @click="load_cidades">
                         </v-select>
                       </v-col>
                       <v-col cols="12" sm="6" md="6">
                         <v-select 
+                          dense
                           v-model="editedItem.profissao_id"
                           label="Profissão"
                           :items="profissoes"
                           :rules="[rules.required]"
                           prepend-icon="layers">
                         </v-select>
+                      </v-col>
+                      <v-col>
+                        <a v-if="anexo" href="javascript: void(0);" @click="download_file">Download Anexo</a>
                       </v-col>
                     </v-row>
                   </v-container>
@@ -160,8 +161,6 @@
 </template>
 <script>
 
-import Tablelist from '@/components/Tablelist.vue'
-
 export default {
   name: 'Profissionais',
   data: function(){
@@ -197,19 +196,25 @@ export default {
       },
       defaultItem: {
         nome: '',
-        modelo: '',
-        marca: '',
-        tipo: '',
-        ano: '',
-        placa: ''
+        nascimento: '',
+        fone: '',
+        email: '',
+        estado_id: '',
+        cidade_id: '',
+        profissao_id: ''
       },
       editedIndex: -1,
+      anexo: false,
       estados: [],
       profissoes: [],
       cidades: []
     }
   },
   methods: {
+    download_file(){
+      let id = this.editedItem.id;
+      window.open(this.$http.defaults.baseURL + '/api/file_download/' + id, '_blank');
+    },
     initialize(){
       this.$http
         .get('/api/profissional')
@@ -218,7 +223,6 @@ export default {
           this.load_profissoes(response.data.profissoes);
 
           this.items = response.data.profissionais;
-          //console.log(response.data);
         }).catch((error) => {
           alert('error ao conectar com api');
         });
@@ -231,9 +235,12 @@ export default {
       }
     },
     editItem (item) {
+      if(this.editedIndex === -1){
+        this.anexo = true;
+      }
       this.editedIndex = this.items.indexOf(item)
       this.editedItem = Object.assign({}, item)
-      this.load_cidades(this.editedItem.estado_id);
+      this.load_cidades();
       
       this.dialog = true
     },
@@ -246,7 +253,7 @@ export default {
           method: 'delete',
           url: '/api/profissional/' + item.id
         }).then(response => {
-          console.log('Deletado com Sucesso!');
+          alert('Deletado com Sucesso!');
         });
       }
     },
@@ -254,6 +261,8 @@ export default {
       this.$refs.form_profissionais.resetValidation();
 
       this.dialog = false
+      this.anexo  = false;
+
       this.$nextTick(() => {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
@@ -271,16 +280,12 @@ export default {
           url: '/api/profissional/' + this.editedItem.id,
           data: params
         }).then(response => {
-          this.table_alert = {
-            type: 'success',
-            data: 'Atualizado com sucesso!'
-          }
+          alert('Atualizado com Sucesso!');
+
+          this.initialize();
           this.close();
         }).catch((error) => {
-          this.form_alert = {
-            type: 'error',
-            data: error.response.data.errors
-          }
+          alert('Error');
         });
       } else {
         //ADD
@@ -291,18 +296,14 @@ export default {
           url: '/api/profissional',
           data: params
         }).then(response => {
-          this.items.push(response.data);
+          //this.items.push(response.data);
+          alert('Adicionado com sucesso!');
 
-          this.table_alert = {
-            type: 'success',
-            data: 'Adicionado com sucesso!'
-          }
+          this.initialize();
           this.close();
         }).catch((error) => {
-          this.form_alert = {
-            type: 'error',
-            data: error.response.data.errors
-          }
+          console.log(error);
+          alert('Error');
         });
       }
     },
@@ -318,19 +319,20 @@ export default {
         this.profissoes.push(obj);
       });
     },
-    load_cidades(estado_id){
-      this.cidades = [];
-
-      this.$http
-        .get('/api/get_cidades/' + estado_id)
-        .then(response => {
-          response.data.forEach((item, index) => {
-            let obj = { text: item.nome, value: item.id }
-            this.cidades.push(obj);
+    load_cidades(){
+      let estado_id = this.editedItem.estado_id;
+      if(estado_id){
+        this.$http
+          .get('/api/get_cidades/' + estado_id)
+          .then(response => {
+            response.data.forEach((item, index) => {
+              let obj = { text: item.nome, value: item.id }
+              this.cidades.push(obj);
+            });
+          }).catch((error) => {
+            alert('error ao conectar com api');
           });
-        }).catch((error) => {
-          alert('error ao conectar com api');
-        });
+      }
     }
   },
   computed: {
@@ -345,9 +347,6 @@ export default {
     dialog (val) {
       val || this.close()
     }
-  },
-  components: {
-    Tablelist
   }
 }
 </script>

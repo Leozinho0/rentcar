@@ -40,7 +40,7 @@ export default {
       links: [
         { title: 'Profissionais', subtitle: 'Acessar', icon: 'assignment_ind', color: 'light-blue lighten-1', url: '/profissionais' },
         { title: 'Dashboard', subtitle: 'Acessar', icon: 'insert_chart', color: 'green lighten-2', url: '/dashboard' },
-        { title: 'Usuários', subtitle: 'Acessar', icon: 'person', color: 'pink lighten-3', url: '/cars' },
+        { title: 'Usuários', subtitle: 'Acessar', icon: 'person', color: 'pink lighten-3', url: '/profissionais' },
         { title: 'Configurações', subtitle: 'Acessar', icon: 'settings', color: 'purple lighten-2', url: '/home' },
       ]
     }
